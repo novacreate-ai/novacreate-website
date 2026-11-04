@@ -8,259 +8,65 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<meta name="description" content="NOVACREATE - The Future of Digital Creativity. Create, imagine and inspire.">
-
-<title>NOVACREATE | The Future of Digital Creativity</title>
+<title>NOVACREATE - AI Creative Studio</title>
 
 <style>
 
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-html { scroll-behavior: smooth; }
+body{margin:0;font-family:Arial,sans-serif;background:#080d1b;color:#fff;line-height:1.6}
 
-body {
+header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;background:#0d1529;flex-wrap:wrap;gap:12px}
 
-  margin: 0;
+.logo{font-size:25px;font-weight:bold;color:#39a9ff}
 
-  background: #06142b;
+nav a{color:#fff;text-decoration:none;margin-left:18px;font-size:14px}
 
-  color: white;
+.hero{text-align:center;padding:90px 20px 75px;background:linear-gradient(135deg,#101d3c,#10102c)}
 
-  font-family: Arial, sans-serif;
+.hero h1{font-size:clamp(36px,7vw,60px);line-height:1.1;margin:0 0 18px}
 
-}
+.hero h1 span{color:#39a9ff}
 
-header {
+.hero p{color:#c5cee2;max-width:600px;margin:0 auto 28px}
 
-  padding: 22px 7%;
+.button{display:inline-block;background:#168cff;color:#fff;padding:13px 24px;border:0;border-radius:8px;text-decoration:none;font-weight:bold;cursor:pointer}
 
-  display: flex;
+section{padding:65px 7%;text-align:center}
 
-  justify-content: space-between;
+h2{font-size:32px;margin:0 0 12px}
 
-  align-items: center;
+.intro{color:#aebbd2;margin:0 auto 30px;max-width:650px}
 
-  border-bottom: 1px solid #15345a;
+.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
 
-}
+.feature{background:#111c33;border:1px solid #263a60;padding:25px;border-radius:12px}
 
-.logo {
+.feature h3{color:#52b4ff}
 
-  font-size: 25px;
+.studio{max-width:700px;margin:25px auto;background:#111c33;border:1px solid #29466f;padding:25px;border-radius:14px;text-align:left}
 
-  font-weight: bold;
+label{display:block;margin:15px 0 7px;font-weight:bold}
 
-  letter-spacing: 2px;
+textarea,select{width:100%;padding:13px;border-radius:8px;border:1px solid #34496c;background:#091226;color:#fff;font:inherit}
 
-}
+textarea{min-height:120px;resize:vertical}
 
-.logo span, h1 span { color: #00d9ff; }
+select{margin-bottom:12px}
 
-nav a {
+.studio button{width:100%;margin-top:15px;font-size:16px}
 
-  color: white;
+#status{margin-top:18px;color:#a9c8ef;white-space:pre-wrap}
 
-  text-decoration: none;
+#preview{display:none;width:100%;margin-top:20px;border-radius:10px}
 
-  margin-left: 20px;
+#download{display:none;margin-top:15px;text-align:center}
 
-  font-size: 14px;
+.note{font-size:12px;color:#9eacc4;text-align:center;margin-top:15px}
 
-}
+footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 
-.hero {
-
-  text-align: center;
-
-  padding: 100px 20px;
-
-  background: radial-gradient(circle at top, #103c76, #06142b 68%);
-
-}
-
-.tag {
-
-  color: #00d9ff;
-
-  letter-spacing: 3px;
-
-  font-size: 12px;
-
-}
-
-h1 { font-size: clamp(38px, 7vw, 65px); margin: 18px 0; }
-
-p {
-
-  color: #b8cce5;
-
-  line-height: 1.7;
-
-}
-
-.hero p {
-
-  max-width: 620px;
-
-  margin: 0 auto;
-
-}
-
-.btn {
-
-  display: inline-block;
-
-  background: #00d9ff;
-
-  color: #06142b;
-
-  padding: 15px 25px;
-
-  border-radius: 9px;
-
-  text-decoration: none;
-
-  font-weight: bold;
-
-  margin-top: 22px;
-
-}
-
-section { padding: 65px 7%; text-align: center; }
-
-h2 { font-size: 32px; }
-
-.cards {
-
-  display: grid;
-
-  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
-
-  gap: 18px;
-
-  margin-top: 30px;
-
-}
-
-.card {
-
-  background: #102746;
-
-  border: 1px solid #17466b;
-
-  padding: 28px;
-
-  border-radius: 14px;
-
-}
-
-.card h3 { color: #00d9ff; }
-
-.studio {
-
-  max-width: 650px;
-
-  margin: 30px auto 0;
-
-  padding: 28px;
-
-  background: #102746;
-
-  border: 1px solid #17466b;
-
-  border-radius: 14px;
-
-}
-
-textarea, select {
-
-  width: 100%;
-
-  padding: 14px;
-
-  margin: 10px 0;
-
-  background: #06142b;
-
-  color: white;
-
-  border: 1px solid #28618c;
-
-  border-radius: 8px;
-
-  font: inherit;
-
-}
-
-textarea { height: 120px; resize: vertical; }
-
-button {
-
-  width: 100%;
-
-  background: #00d9ff;
-
-  color: #06142b;
-
-  border: 0;
-
-  padding: 15px;
-
-  border-radius: 8px;
-
-  font-weight: bold;
-
-  font-size: 16px;
-
-  cursor: pointer;
-
-}
-
-#result {
-
-  display: none;
-
-  text-align: left;
-
-  white-space: pre-wrap;
-
-  overflow-wrap: anywhere;
-
-  background: #06142b;
-
-  padding: 15px;
-
-  border-radius: 8px;
-
-  margin-top: 15px;
-
-  color: #b8cce5;
-
-}
-
-footer {
-
-  text-align: center;
-
-  padding: 30px 15px;
-
-  border-top: 1px solid #15345a;
-
-  color: #b8cce5;
-
-  font-size: 13px;
-
-}
-
-@media(max-width:600px) {
-
-  header { flex-direction: column; gap: 16px; }
-
-  nav a { margin: 0 8px; }
-
-  .hero { padding: 75px 18px; }
-
-}
+@media(max-width:550px){header{justify-content:center}nav a{margin:0 8px}.hero{padding-top:65px}}
 
 </style>
 
@@ -270,169 +76,197 @@ footer {
 
 <header>
 
-  <div class="logo">NOVA<span>CREATE</span></div>
+<div class="logo">NOVACREATE</div>
 
-  <nav>
+<nav>
 
-    <a href="#features">Features</a>
+<a href="#home">Home</a>
 
-    <a href="#studio">Studio</a>
+<a href="#features">Features</a>
 
-    <a href="#about">About</a>
+<a href="#studio">Studio</a>
 
-  </nav>
+<a href="#about">About</a>
+
+</nav>
 
 </header>
 
-<main>
+<div class="hero" id="home">
 
-  <div class="hero">
+<h1>Create Beyond <span>Imagination</span></h1>
 
-    <div class="tag">THE FUTURE OF DIGITAL CREATIVITY</div>
+<p>Discover a new world of creativity. Turn your ideas into AI-generated images with NOVACREATE.</p>
 
-    <h1>Create Beyond<br><span>Imagination.</span></h1>
+<a class="button" href="#studio">Start Creating</a>
 
-    <p>
+</div>
 
-      Turn your ideas into creative possibilities.
+<section id="features">
 
-      Discover a new space for digital creativity,
+<h2>Explore NOVACREATE</h2>
 
-      content inspiration and AI-powered tools.
+<p class="intro">Creative tools designed to help creators bring their ideas to life.</p>
 
-    </p>
+<div class="features">
 
-    <a class="btn" href="#studio">Explore Creator Studio</a>
+<div class="feature">
 
-  </div>
+<h3>AI Image Creation</h3>
 
-  <section id="features">
+<p>Turn written ideas into original AI-generated images.</p>
 
-    <h2>Bring Your Ideas to Life</h2>
+</div>
 
-    <p>Everything starts with an idea. Let's create something amazing.</p>
+<div class="feature">
 
-    <div class="cards">
+<h3>Social Content</h3>
 
-      <div class="card">
+<p>Create visual ideas for your social media content.</p>
 
-        <h3>AI Image Creation</h3>
+</div>
 
-        <p>Turn written ideas into visual concepts with AI tools as they become available.</p>
+<div class="feature">
 
-      </div>
+<h3>Creator Studio</h3>
 
-      <div class="card">
+<p>Bring your imagination into one creative space.</p>
 
-        <h3>Social Content</h3>
+</div>
 
-        <p>Plan creative content and develop ideas for your social media audience.</p>
+</div>
 
-      </div>
+</section>
 
-      <div class="card">
+<section id="studio">
 
-        <h3>Creator Studio</h3>
+<h2>Your AI Creative Studio</h2>
 
-        <p>Bring your creative briefs and inspiration together in one place.</p>
+<p class="intro">Describe the image you want. Choose a style and let NOVACREATE create it.</p>
 
-      </div>
+<div class="studio">
 
-    </div>
+<label for="idea">Describe your image</label>
 
-  </section>
+<textarea id="idea" maxlength="1800" placeholder="Example: A futuristic city at night, glowing blue buildings and flying cars..."></textarea>
 
-  <section id="studio">
+<label for="style">Choose your image style</label>
 
-    <h2>Your Creative Studio</h2>
+<select id="style">
 
-    <p>Start with an idea and prepare your creative brief.</p>
+<option>Realistic</option>
 
-    <div class="studio">
+<option>Cinematic</option>
 
-      <textarea id="idea" placeholder="Describe what you want to create..."></textarea>
+<option>Digital art</option>
 
-      <select id="style">
+<option>3D illustration</option>
 
-        <option value="Realistic">Realistic</option>
+<option>Minimalist</option>
 
-        <option value="Cinematic">Cinematic</option>
+</select>
 
-        <option value="Digital art">Digital art</option>
+<button class="button" id="generate" onclick="generateImage()">Generate My Image</button>
 
-        <option value="3D illustration">3D illustration</option>
+<div id="status" role="status"></div>
 
-        <option value="Minimalist">Minimalist</option>
+<img id="preview" alt="Your AI-generated image">
 
-      </select>
+<a id="download" class="button" download="novacreate-image.jpg">Download Image</a>
 
-      <button onclick="createBrief()">Prepare My Creative Brief</button>
+<p class="note">Image generation uses Cloudflare AI. Availability and usage limits may apply.</p>
 
-      <div id="result"></div>
+</div>
 
-    </div>
+</section>
 
-    <p><small>This preview prepares a text brief. AI image generation is not connected yet.</small></p>
+<section id="about">
 
-  </section>
+<h2>About NOVACREATE</h2>
 
-  <section id="about">
+<p class="intro">NOVACREATE is building a creative platform for people around the world. Our mission is to make digital creativity more accessible through artificial intelligence.</p>
 
-    <h2>Welcome to NOVACREATE</h2>
-
-    <p>
-
-      We believe everyone should have the tools to bring their imagination
-
-      to life. Our mission is to make digital creativity more accessible.
-
-    </p>
-
-    <p><strong>The Future of Digital Creativity.</strong></p>
-
-  </section>
-
-</main>
+</section>
 
 <footer>
 
-  © 2026 NOVACREATE. All rights reserved.
-
-  <br><br>
-
-  Made for creators, dreamers and innovators.
+<p>© 2026 NOVACREATE. The Future of Digital Creativity.</p>
 
 </footer>
 
 <script>
 
-function createBrief() {
+async function generateImage(){
 
-  const idea = document.getElementById("idea").value.trim();
+ const idea=document.getElementById("idea").value.trim();
 
-  const style = document.getElementById("style").value;
+ const style=document.getElementById("style").value;
 
-  const result = document.getElementById("result");
+ const status=document.getElementById("status");
 
-  if (!idea) {
+ const button=document.getElementById("generate");
 
-    alert("Please describe your creative idea first.");
+ const preview=document.getElementById("preview");
 
-    return;
+ const download=document.getElementById("download");
 
-  }
+ if(!idea){
 
-  result.style.display = "block";
+  status.textContent="Please describe the image you want first.";
 
-  result.textContent =
+  return;
 
-    "YOUR NOVACREATE CREATIVE BRIEF\n\n" +
+ }
 
-    "Idea: " + idea + "\n" +
+ button.disabled=true;
 
-    "Style: " + style + "\n\n" +
+ button.textContent="Creating your image...";
 
-    "This brief is ready to use with an AI image-generation tool.";
+ status.textContent="NOVACREATE is working on your image. Please wait.";
+
+ preview.style.display="none";
+
+ download.style.display="none";
+
+ try{
+
+  const response=await fetch("https://novacreate-ai.mbanjwasphelele16.workers.dev/generate",{
+
+   method:"POST",
+
+   headers:{"Content-Type":"application/json"},
+
+   body:JSON.stringify({prompt:idea+", "+style+" style"})
+
+  });
+
+  const data=await response.json();
+
+  if(!response.ok) throw new Error(data.error||"Image generation failed.");
+
+  if(!data.image) throw new Error("No image was returned. Please try again.");
+
+  preview.src=data.image;
+
+  preview.style.display="block";
+
+  download.href=data.image;
+
+  download.style.display="block";
+
+  status.textContent="Your NOVACREATE image is ready!";
+
+ }catch(error){
+
+  status.textContent="Sorry, we couldn't create your image. "+error.message;
+
+ }finally{
+
+  button.disabled=false;
+
+  button.textContent="Generate My Image";
+
+ }
 
 }
 
