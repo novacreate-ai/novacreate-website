@@ -1,24 +1,443 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NOVACREATE | Digital Creativity</title>
+
+<meta name="description" content="NOVACREATE - The Future of Digital Creativity. Create, imagine and inspire.">
+
+<title>NOVACREATE | The Future of Digital Creativity</title>
+
 <style>
-*{box-sizing:border-box}
-body{margin:0;background:#06142b;color:white;font-family:Arial,sans-serif}
-header{padding:22px 7%;border-bottom:1px solid #15345a}
-.logo{font-size:25px;font-weight:bold;letter-spacing:2px}
-.logo span{color:#00d9ff}
-.hero{text-align:center;padding:90px 20px;background:radial-gradient(circle at top,#103c76,#06142b 65%)}
-h1{font-size:48px;margin:15px 0}
-h1 span{color:#00d9ff}
-p{color:#b8cce5;line-height:1.7}
-.btn{display:inline-block;background:#00d9ff;color:#06142b;padding:15px 25px;border-radius:9px;text-decoration:none;font-weight:bold;margin-top:15px}
-section{padding:55px 7%;text-align:center}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:18px}
-.card{background:#102746;border:1px solid #17466b;padding:25px;border-radius:14px}
-.card h3{color:#00d9ff}
-textarea,select{width:100%;padding:14px;margin:10px 0;background:#102746;color:white;border:1px solid #28618c;border-radius:8px}
-textarea{height:110px}
-button{background:#00d9ff;color:#06142b;border
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+
+  margin: 0;
+
+  background: #06142b;
+
+  color: white;
+
+  font-family: Arial, sans-serif;
+
+}
+
+header {
+
+  padding: 22px 7%;
+
+  display: flex;
+
+  justify-content: space-between;
+
+  align-items: center;
+
+  border-bottom: 1px solid #15345a;
+
+}
+
+.logo {
+
+  font-size: 25px;
+
+  font-weight: bold;
+
+  letter-spacing: 2px;
+
+}
+
+.logo span, h1 span { color: #00d9ff; }
+
+nav a {
+
+  color: white;
+
+  text-decoration: none;
+
+  margin-left: 20px;
+
+  font-size: 14px;
+
+}
+
+.hero {
+
+  text-align: center;
+
+  padding: 100px 20px;
+
+  background: radial-gradient(circle at top, #103c76, #06142b 68%);
+
+}
+
+.tag {
+
+  color: #00d9ff;
+
+  letter-spacing: 3px;
+
+  font-size: 12px;
+
+}
+
+h1 { font-size: clamp(38px, 7vw, 65px); margin: 18px 0; }
+
+p {
+
+  color: #b8cce5;
+
+  line-height: 1.7;
+
+}
+
+.hero p {
+
+  max-width: 620px;
+
+  margin: 0 auto;
+
+}
+
+.btn {
+
+  display: inline-block;
+
+  background: #00d9ff;
+
+  color: #06142b;
+
+  padding: 15px 25px;
+
+  border-radius: 9px;
+
+  text-decoration: none;
+
+  font-weight: bold;
+
+  margin-top: 22px;
+
+}
+
+section { padding: 65px 7%; text-align: center; }
+
+h2 { font-size: 32px; }
+
+.cards {
+
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+
+  gap: 18px;
+
+  margin-top: 30px;
+
+}
+
+.card {
+
+  background: #102746;
+
+  border: 1px solid #17466b;
+
+  padding: 28px;
+
+  border-radius: 14px;
+
+}
+
+.card h3 { color: #00d9ff; }
+
+.studio {
+
+  max-width: 650px;
+
+  margin: 30px auto 0;
+
+  padding: 28px;
+
+  background: #102746;
+
+  border: 1px solid #17466b;
+
+  border-radius: 14px;
+
+}
+
+textarea, select {
+
+  width: 100%;
+
+  padding: 14px;
+
+  margin: 10px 0;
+
+  background: #06142b;
+
+  color: white;
+
+  border: 1px solid #28618c;
+
+  border-radius: 8px;
+
+  font: inherit;
+
+}
+
+textarea { height: 120px; resize: vertical; }
+
+button {
+
+  width: 100%;
+
+  background: #00d9ff;
+
+  color: #06142b;
+
+  border: 0;
+
+  padding: 15px;
+
+  border-radius: 8px;
+
+  font-weight: bold;
+
+  font-size: 16px;
+
+  cursor: pointer;
+
+}
+
+#result {
+
+  display: none;
+
+  text-align: left;
+
+  white-space: pre-wrap;
+
+  overflow-wrap: anywhere;
+
+  background: #06142b;
+
+  padding: 15px;
+
+  border-radius: 8px;
+
+  margin-top: 15px;
+
+  color: #b8cce5;
+
+}
+
+footer {
+
+  text-align: center;
+
+  padding: 30px 15px;
+
+  border-top: 1px solid #15345a;
+
+  color: #b8cce5;
+
+  font-size: 13px;
+
+}
+
+@media(max-width:600px) {
+
+  header { flex-direction: column; gap: 16px; }
+
+  nav a { margin: 0 8px; }
+
+  .hero { padding: 75px 18px; }
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+  <div class="logo">NOVA<span>CREATE</span></div>
+
+  <nav>
+
+    <a href="#features">Features</a>
+
+    <a href="#studio">Studio</a>
+
+    <a href="#about">About</a>
+
+  </nav>
+
+</header>
+
+<main>
+
+  <div class="hero">
+
+    <div class="tag">THE FUTURE OF DIGITAL CREATIVITY</div>
+
+    <h1>Create Beyond<br><span>Imagination.</span></h1>
+
+    <p>
+
+      Turn your ideas into creative possibilities.
+
+      Discover a new space for digital creativity,
+
+      content inspiration and AI-powered tools.
+
+    </p>
+
+    <a class="btn" href="#studio">Explore Creator Studio</a>
+
+  </div>
+
+  <section id="features">
+
+    <h2>Bring Your Ideas to Life</h2>
+
+    <p>Everything starts with an idea. Let's create something amazing.</p>
+
+    <div class="cards">
+
+      <div class="card">
+
+        <h3>AI Image Creation</h3>
+
+        <p>Turn written ideas into visual concepts with AI tools as they become available.</p>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Social Content</h3>
+
+        <p>Plan creative content and develop ideas for your social media audience.</p>
+
+      </div>
+
+      <div class="card">
+
+        <h3>Creator Studio</h3>
+
+        <p>Bring your creative briefs and inspiration together in one place.</p>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <section id="studio">
+
+    <h2>Your Creative Studio</h2>
+
+    <p>Start with an idea and prepare your creative brief.</p>
+
+    <div class="studio">
+
+      <textarea id="idea" placeholder="Describe what you want to create..."></textarea>
+
+      <select id="style">
+
+        <option value="Realistic">Realistic</option>
+
+        <option value="Cinematic">Cinematic</option>
+
+        <option value="Digital art">Digital art</option>
+
+        <option value="3D illustration">3D illustration</option>
+
+        <option value="Minimalist">Minimalist</option>
+
+      </select>
+
+      <button onclick="createBrief()">Prepare My Creative Brief</button>
+
+      <div id="result"></div>
+
+    </div>
+
+    <p><small>This preview prepares a text brief. AI image generation is not connected yet.</small></p>
+
+  </section>
+
+  <section id="about">
+
+    <h2>Welcome to NOVACREATE</h2>
+
+    <p>
+
+      We believe everyone should have the tools to bring their imagination
+
+      to life. Our mission is to make digital creativity more accessible.
+
+    </p>
+
+    <p><strong>The Future of Digital Creativity.</strong></p>
+
+  </section>
+
+</main>
+
+<footer>
+
+  © 2026 NOVACREATE. All rights reserved.
+
+  <br><br>
+
+  Made for creators, dreamers and innovators.
+
+</footer>
+
+<script>
+
+function createBrief() {
+
+  const idea = document.getElementById("idea").value.trim();
+
+  const style = document.getElementById("style").value;
+
+  const result = document.getElementById("result");
+
+  if (!idea) {
+
+    alert("Please describe your creative idea first.");
+
+    return;
+
+  }
+
+  result.style.display = "block";
+
+  result.textContent =
+
+    "YOUR NOVACREATE CREATIVE BRIEF\n\n" +
+
+    "Idea: " + idea + "\n" +
+
+    "Style: " + style + "\n\n" +
+
+    "This brief is ready to use with an AI image-generation tool.";
+
+}
+
+</script>
+
+</body>
+
+</html>
