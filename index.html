@@ -16,12 +16,12 @@ nav a{color:#fff;text-decoration:none;margin:8px;font-size:14px}
 .hero h1 span{color:#39a9ff}
 .hero p,.intro{color:#c5cee2;max-width:650px;margin:0 auto 25px}
 .button{display:inline-block;background:#168cff;color:#fff;padding:13px 24px;border:0;border-radius:8px;text-decoration:none;font-weight:bold;cursor:pointer}
-.button:disabled{opacity:.6;cursor:wait}
+.button:disabled{opacity:.6}
 section{padding:60px 7%;text-align:center}
 h2{font-size:30px}
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
-.feature,.panel{background:#111c33;border:1px solid #263a60;padding:25px;border-radius:12px}
-.feature h3{color:#52b4ff}
+.features,.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
+.feature,.panel,.dash-card{background:#111c33;border:1px solid #263a60;padding:25px;border-radius:12px}
+.feature h3,.dash-card h3{color:#52b4ff}
 .panel{max-width:650px;margin:25px auto;text-align:left}
 label{display:block;margin:14px 0 6px;font-weight:bold}
 input,textarea,select{width:100%;padding:13px;border-radius:8px;border:1px solid #34496c;background:#091226;color:#fff;font:inherit}
@@ -31,6 +31,11 @@ textarea{min-height:120px}
 #preview{display:none;width:100%;margin-top:20px;border-radius:10px}
 #download{display:none;margin-top:15px;text-align:center}
 .small{font-size:13px;color:#aebbd2}
+#dashboard{display:none;background:#0b1428}
+.dash-card{min-height:145px}
+.dash-card p{color:#aebbd2}
+.dash-card a{color:#65baff}
+#galleryMessage{color:#aebbd2;margin-top:20px}
 footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 @media(max-width:550px){header{justify-content:center}nav{text-align:center}}
 </style>
@@ -44,6 +49,7 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <a href="#features">Features</a>
 <a href="#studio">Studio</a>
 <a href="#account">Account</a>
+<a href="#dashboard">Dashboard</a>
 <a href="#about">About</a>
 </nav>
 </header>
@@ -69,19 +75,42 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <p class="intro">Create an account or sign in to NOVACREATE.</p>
 <div class="panel">
 <div id="accountInfo">You are not signed in.</div>
-
 <label for="email">Email address</label>
 <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
-
 <label for="password">Password</label>
 <input id="password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters">
-
 <button class="button" id="signupButton" onclick="signUp()">Create Account</button>
 <button class="button" id="loginButton" onclick="signIn()">Sign In</button>
 <button class="button" id="logoutButton" onclick="signOut()" style="display:none">Sign Out</button>
-
 <div id="authStatus" role="status"></div>
-<p class="small">Use your own email address. You may need to confirm your email before signing in.</p>
+<p class="small">You may need to confirm your email before signing in.</p>
+</div>
+</section>
+
+<section id="dashboard">
+<h2>Welcome to Your Creator Dashboard</h2>
+<p class="intro">Your creative space starts here.</p>
+<div class="panel">
+<h3>Creator Profile</h3>
+<p id="dashboardEmail">Sign in to view your account.</p>
+<p id="memberSince" class="small"></p>
+</div>
+<div class="dashboard-grid">
+<div class="dash-card">
+<h3>🎨 Create Images</h3>
+<p>Turn your ideas into AI artwork.</p>
+<a href="#studio">Open AI Studio →</a>
+</div>
+<div class="dash-card">
+<h3>🖼️ My Gallery</h3>
+<p>Your personal image collection.</p>
+<p id="galleryMessage">Your saved gallery will be connected next.</p>
+</div>
+<div class="dash-card">
+<h3>👤 My Account</h3>
+<p>View your signed-in email and account details.</p>
+<a href="#account">Manage Account →</a>
+</div>
 </div>
 </section>
 
@@ -91,7 +120,6 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <div class="panel">
 <label for="idea">Describe your image</label>
 <textarea id="idea" maxlength="1800" placeholder="Example: A futuristic city at night with glowing blue buildings..."></textarea>
-
 <label for="style">Choose your image style</label>
 <select id="style">
 <option>Realistic</option>
@@ -100,7 +128,6 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <option>3D illustration</option>
 <option>Minimalist</option>
 </select>
-
 <button class="button" id="generate" onclick="generateImage()">Generate My Image</button>
 <div id="status" role="status"></div>
 <img id="preview" alt="Your AI-generated image">
@@ -120,142 +147,104 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabase = createClient(
-  "https://ewmmideacscdxyhdqspl.supabase.co",
-  "sb_publishable_1QHJ48mb5D7nwShvTiWcig_ukWKDSCR"
+ "https://ewmmideacscdxyhdqspl.supabase.co",
+ "sb_publishable_1QHJ48mb5D7nwShvTiWcig_ukWKDSCR"
 );
 
-const emailInput = document.getElementById("email");
-const passwordInput = document.getElementById("password");
-const authStatus = document.getElementById("authStatus");
+const emailInput=document.getElementById("email");
+const passwordInput=document.getElementById("password");
+const authStatus=document.getElementById("authStatus");
 
-function showAccount(user) {
-  document.getElementById("accountInfo").textContent =
-    user ? "Signed in as " + user.email : "You are not signed in.";
-
-  document.getElementById("signupButton").style.display = user ? "none" : "inline-block";
-  document.getElementById("loginButton").style.display = user ? "none" : "inline-block";
-  document.getElementById("logoutButton").style.display = user ? "inline-block" : "none";
+function showAccount(user){
+ document.getElementById("accountInfo").textContent=user?"Signed in as "+user.email:"You are not signed in.";
+ document.getElementById("signupButton").style.display=user?"none":"inline-block";
+ document.getElementById("loginButton").style.display=user?"none":"inline-block";
+ document.getElementById("logoutButton").style.display=user?"inline-block":"none";
+ document.getElementById("dashboard").style.display=user?"block":"none";
+ document.getElementById("dashboardEmail").textContent=user?user.email:"Sign in to view your account.";
+ document.getElementById("memberSince").textContent=user&&user.created_at?"Member since "+new Date(user.created_at).toLocaleDateString():"";
 }
 
-window.signUp = async function() {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-
-  if (!email || password.length < 8) {
-    authStatus.textContent = "Enter a valid email and a password of at least 8 characters.";
-    return;
-  }
-
-  authStatus.textContent = "Creating your account...";
-
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      emailRedirectTo: "https://novacreate-ai.github.io/novacreate-website/"
-    }
-  });
-
-  if (error) {
-    authStatus.textContent = error.message;
-    return;
-  }
-
-  if (data.session) {
-    authStatus.textContent = "Your account has been created. Welcome to NOVACREATE!";
-    showAccount(data.user);
-  } else {
-    authStatus.textContent = "Registration successful! Please check your email and click the confirmation link before signing in.";
-  }
-};
-
-window.signIn = async function() {
-  const email = emailInput.value.trim();
-  const password = passwordInput.value;
-
-  if (!email || !password) {
-    authStatus.textContent = "Enter your email and password.";
-    return;
-  }
-
-  authStatus.textContent = "Signing in...";
-
-  const { data, error } = await supabase.auth.signInWithPassword({
-    email,
-    password
-  });
-
-  if (error) {
-    authStatus.textContent = error.message;
-    return;
-  }
-
-  authStatus.textContent = "Welcome back to NOVACREATE!";
+window.signUp=async function(){
+ const email=emailInput.value.trim();
+ const password=passwordInput.value;
+ if(!email||password.length<8){authStatus.textContent="Enter a valid email and password of at least 8 characters.";return;}
+ authStatus.textContent="Creating your account...";
+ const {data,error}=await supabase.auth.signUp({
+  email,password,
+  options:{emailRedirectTo:"https://novacreate-ai.github.io/novacreate-website/"}
+ });
+ if(error){authStatus.textContent=error.message;return;}
+ if(data.session){
+  authStatus.textContent="Welcome to NOVACREATE!";
   showAccount(data.user);
+ }else{
+  authStatus.textContent="Registration successful! Please check your email and confirm your account.";
+ }
 };
 
-window.signOut = async function() {
-  const { error } = await supabase.auth.signOut();
-
-  if (error) {
-    authStatus.textContent = error.message;
-    return;
-  }
-
-  authStatus.textContent = "You have signed out.";
-  showAccount(null);
+window.signIn=async function(){
+ const email=emailInput.value.trim();
+ const password=passwordInput.value;
+ if(!email||!password){authStatus.textContent="Enter your email and password.";return;}
+ authStatus.textContent="Signing in...";
+ const {data,error}=await supabase.auth.signInWithPassword({email,password});
+ if(error){authStatus.textContent=error.message;return;}
+ authStatus.textContent="Welcome back to NOVACREATE!";
+ showAccount(data.user);
 };
 
-const { data: sessionData } = await supabase.auth.getSession();
-showAccount(sessionData.session?.user || null);
+window.signOut=async function(){
+ const {error}=await supabase.auth.signOut();
+ if(error){authStatus.textContent=error.message;return;}
+ authStatus.textContent="You have signed out.";
+ showAccount(null);
+};
 
-supabase.auth.onAuthStateChange((_event, session) => {
-  showAccount(session?.user || null);
+const {data:sessionData}=await supabase.auth.getSession();
+showAccount(sessionData.session?.user||null);
+
+supabase.auth.onAuthStateChange((_event,session)=>{
+ showAccount(session?.user||null);
 });
 </script>
 
 <script>
-async function generateImage() {
- const idea = document.getElementById("idea").value.trim();
- const style = document.getElementById("style").value;
- const status = document.getElementById("status");
- const button = document.getElementById("generate");
- const preview = document.getElementById("preview");
- const download = document.getElementById("download");
+async function generateImage(){
+ const idea=document.getElementById("idea").value.trim();
+ const style=document.getElementById("style").value;
+ const status=document.getElementById("status");
+ const button=document.getElementById("generate");
+ const preview=document.getElementById("preview");
+ const download=document.getElementById("download");
 
- if (!idea) {
-   status.textContent = "Please describe your image first.";
-   return;
- }
+ if(!idea){status.textContent="Please describe your image first.";return;}
 
- button.disabled = true;
- button.textContent = "Creating your image...";
- status.textContent = "NOVACREATE is creating your image. Please wait.";
- preview.style.display = "none";
- download.style.display = "none";
+ button.disabled=true;
+ button.textContent="Creating your image...";
+ status.textContent="NOVACREATE is creating your image. Please wait.";
+ preview.style.display="none";
+ download.style.display="none";
 
- try {
-   const response = await fetch("https://novacreate-ai.mbanjwasphelele16.workers.dev/generate", {
-     method: "POST",
-     headers: {"Content-Type": "application/json"},
-     body: JSON.stringify({prompt: idea + ", " + style + " style"})
-   });
-
-   const data = await response.json();
-
-   if (!response.ok) throw new Error(data.error || "Image generation failed.");
-   if (!data.image) throw new Error("No image was returned.");
-
-   preview.src = data.image;
-   preview.style.display = "block";
-   download.href = data.image;
-   download.style.display = "inline-block";
-   status.textContent = "Your NOVACREATE image is ready!";
- } catch (error) {
-   status.textContent = "Sorry, we couldn't create your image. " + error.message;
- } finally {
-   button.disabled = false;
-   button.textContent = "Generate My Image";
+ try{
+  const response=await fetch("https://novacreate-ai.mbanjwasphelele16.workers.dev/generate",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({prompt:idea+", "+style+" style"})
+  });
+  const data=await response.json();
+  if(!response.ok)throw new Error(data.error||"Image generation failed.");
+  if(!data.image)throw new Error("No image was returned.");
+  preview.src=data.image;
+  preview.style.display="block";
+  download.href=data.image;
+  download.style.display="block";
+  status.textContent="Your NOVACREATE image is ready!";
+ }catch(error){
+  status.textContent="Sorry, we couldn't create your image. "+error.message;
+ }finally{
+  button.disabled=false;
+  button.textContent="Generate My Image";
  }
 }
 </script>
