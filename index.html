@@ -19,15 +19,15 @@ nav a{color:#fff;text-decoration:none;margin:8px;font-size:14px}
 .button:disabled{opacity:.6}
 section{padding:60px 7%;text-align:center}
 h2{font-size:30px}
-.features,.dashboard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
-.feature,.panel,.dash-card{background:#111c33;border:1px solid #263a60;padding:25px;border-radius:12px}
+.features,.dashboard-grid,.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
+.feature,.panel,.dash-card,.gallery-item{background:#111c33;border:1px solid #263a60;padding:25px;border-radius:12px}
 .feature h3,.dash-card h3{color:#52b4ff}
 .panel{max-width:650px;margin:25px auto;text-align:left}
 label{display:block;margin:14px 0 6px;font-weight:bold}
 input,textarea,select{width:100%;padding:13px;border-radius:8px;border:1px solid #34496c;background:#091226;color:#fff;font:inherit}
 textarea{min-height:120px}
 .panel button{margin-top:15px}
-#authStatus,#status{margin-top:15px;color:#a9c8ef;white-space:pre-wrap}
+#authStatus,#status,#galleryMessage{margin-top:15px;color:#a9c8ef;white-space:pre-wrap}
 #preview{display:none;width:100%;margin-top:20px;border-radius:10px}
 #download{display:none;margin-top:15px;text-align:center}
 .small{font-size:13px;color:#aebbd2}
@@ -35,7 +35,11 @@ textarea{min-height:120px}
 .dash-card{min-height:145px}
 .dash-card p{color:#aebbd2}
 .dash-card a{color:#65baff}
-#galleryMessage{color:#aebbd2;margin-top:20px}
+.gallery-item img{width:100%;border-radius:8px;display:block}
+.gallery-item p{overflow-wrap:anywhere;color:#c5cee2}
+.gallery-item a{color:#65baff}
+.gallery-item button{margin-top:10px}
+#gallery{padding-top:35px}
 footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 @media(max-width:550px){header{justify-content:center}nav{text-align:center}}
 </style>
@@ -92,7 +96,7 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <p class="intro">Your creative space starts here.</p>
 <div class="panel">
 <h3>Creator Profile</h3>
-<p id="dashboardEmail">Sign in to view your account.</p>
+<p id="dashboardEmail"></p>
 <p id="memberSince" class="small"></p>
 </div>
 <div class="dashboard-grid">
@@ -104,7 +108,8 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <div class="dash-card">
 <h3>🖼️ My Gallery</h3>
 <p>Your personal image collection.</p>
-<p id="galleryMessage">Your saved gallery will be connected next.</p>
+<a href="#gallery">View My Gallery →</a>
+<p id="galleryMessage">Your saved images will appear below.</p>
 </div>
 <div class="dash-card">
 <h3>👤 My Account</h3>
@@ -112,6 +117,13 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <a href="#account">Manage Account →</a>
 </div>
 </div>
+
+<section id="gallery">
+<h2>My Gallery</h2>
+<p class="intro">Your saved NOVACREATE artwork.</p>
+<div id="galleryMessageMain" role="status">Sign in to view your gallery.</div>
+<div id="galleryGrid" class="gallery-grid"></div>
+</section>
 </section>
 
 <section id="studio">
@@ -132,7 +144,7 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <div id="status" role="status"></div>
 <img id="preview" alt="Your AI-generated image">
 <a id="download" class="button" download="novacreate-image.jpg">Download Image</a>
-<p class="small">Image generation uses Cloudflare AI. Usage limits may apply.</p>
+<p class="small">Images are saved automatically to your private gallery when you are signed in. Cloudflare AI usage limits may apply.</p>
 </div>
 </section>
 
@@ -147,106 +159,245 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabase = createClient(
- "https://ewmmideacscdxyhdqspl.supabase.co",
- "sb_publishable_1QHJ48mb5D7nwShvTiWcig_ukWKDSCR"
+"https://ewmmideacscdxyhdqspl.supabase.co",
+"sb_publishable_1QHJ48mb5D7nwShvTiWcig_ukWKDSCR"
 );
 
-const emailInput=document.getElementById("email");
-const passwordInput=document.getElementById("password");
-const authStatus=document.getElementById("authStatus");
+const BUCKET = "novacreate-gallery";
+const emailInput = document.getElementById("email");
+const passwordInput = document.getElementById("password");
+const authStatus = document.getElementById("authStatus");
 
-function showAccount(user){
- document.getElementById("accountInfo").textContent=user?"Signed in as "+user.email:"You are not signed in.";
- document.getElementById("signupButton").style.display=user?"none":"inline-block";
- document.getElementById("loginButton").style.display=user?"none":"inline-block";
- document.getElementById("logoutButton").style.display=user?"inline-block":"none";
- document.getElementById("dashboard").style.display=user?"block":"none";
- document.getElementById("dashboardEmail").textContent=user?user.email:"Sign in to view your account.";
- document.getElementById("memberSince").textContent=user&&user.created_at?"Member since "+new Date(user.created_at).toLocaleDateString():"";
+function clearGallery(message){
+document.getElementById("galleryGrid").replaceChildren();
+document.getElementById("galleryMessageMain").textContent = message;
+document.getElementById("galleryMessage").textContent = message;
 }
 
-window.signUp=async function(){
- const email=emailInput.value.trim();
- const password=passwordInput.value;
- if(!email||password.length<8){authStatus.textContent="Enter a valid email and password of at least 8 characters.";return;}
- authStatus.textContent="Creating your account...";
- const {data,error}=await supabase.auth.signUp({
-  email,password,
-  options:{emailRedirectTo:"https://novacreate-ai.github.io/novacreate-website/"}
- });
- if(error){authStatus.textContent=error.message;return;}
- if(data.session){
-  authStatus.textContent="Welcome to NOVACREATE!";
-  showAccount(data.user);
- }else{
-  authStatus.textContent="Registration successful! Please check your email and confirm your account.";
- }
+async function loadGallery(user){
+const grid = document.getElementById("galleryGrid");
+const message = document.getElementById("galleryMessageMain");
+grid.replaceChildren();
+message.textContent = "Loading your gallery...";
+
+const {data,error} = await supabase
+.from("gallery")
+.select("id,image_url,prompt,created_at")
+.eq("user_id",user.id)
+.order("created_at",{ascending:false});
+
+if(error){
+message.textContent = "Could not load gallery: " + error.message;
+return;
+}
+
+if(!data || data.length===0){
+message.textContent = "Your gallery is empty. Generate your first image!";
+document.getElementById("galleryMessage").textContent = "No saved images yet.";
+return;
+}
+
+message.textContent = data.length + " saved image(s).";
+
+for(const item of data){
+const {data:signed,error:signedError} = await supabase
+.storage.from(BUCKET)
+.createSignedUrl(item.image_url,3600);
+
+if(signedError) continue;
+
+const card = document.createElement("div");
+card.className = "gallery-item";
+
+const img = document.createElement("img");
+img.src = signed.signedUrl;
+img.alt = item.prompt || "NOVACREATE artwork";
+
+const description = document.createElement("p");
+description.textContent = item.prompt || "AI-generated artwork";
+
+const date = document.createElement("p");
+date.className = "small";
+date.textContent = new Date(item.created_at).toLocaleDateString();
+
+const download = document.createElement("a");
+download.href = signed.signedUrl;
+download.target = "_blank";
+download.rel = "noopener";
+download.textContent = "Open / Download Image";
+
+const remove = document.createElement("button");
+remove.className = "button";
+remove.textContent = "Delete Image";
+remove.onclick = () => deleteImage(item);
+
+card.append(img,description,date,download,document.createElement("br"),remove);
+grid.appendChild(card);
+}
+}
+
+async function showAccount(user){
+document.getElementById("accountInfo").textContent =
+user ? "Signed in as " + user.email : "You are not signed in.";
+document.getElementById("signupButton").style.display = user ? "none" : "inline-block";
+document.getElementById("loginButton").style.display = user ? "none" : "inline-block";
+document.getElementById("logoutButton").style.display = user ? "inline-block" : "none";
+document.getElementById("dashboard").style.display = user ? "block" : "none";
+document.getElementById("dashboardEmail").textContent = user ? user.email : "";
+document.getElementById("memberSince").textContent =
+user && user.created_at ? "Member since " + new Date(user.created_at).toLocaleDateString() : "";
+
+if(user){
+await loadGallery(user);
+}else{
+clearGallery("Sign in to view your gallery.");
+}
+}
+
+window.signUp = async function(){
+const email = emailInput.value.trim();
+const password = passwordInput.value;
+if(!email || password.length<8){
+authStatus.textContent = "Enter a valid email and password of at least 8 characters.";
+return;
+}
+authStatus.textContent = "Creating your account...";
+const {data,error} = await supabase.auth.signUp({
+email,password,
+options:{emailRedirectTo:"https://novacreate-ai.github.io/novacreate-website/"}
+});
+if(error){authStatus.textContent=error.message;return;}
+if(data.session){
+authStatus.textContent="Welcome to NOVACREATE!";
+await showAccount(data.user);
+}else{
+authStatus.textContent="Registration successful! Please check your email and confirm your account.";
+}
 };
 
-window.signIn=async function(){
- const email=emailInput.value.trim();
- const password=passwordInput.value;
- if(!email||!password){authStatus.textContent="Enter your email and password.";return;}
- authStatus.textContent="Signing in...";
- const {data,error}=await supabase.auth.signInWithPassword({email,password});
- if(error){authStatus.textContent=error.message;return;}
- authStatus.textContent="Welcome back to NOVACREATE!";
- showAccount(data.user);
+window.signIn = async function(){
+const email=emailInput.value.trim();
+const password=passwordInput.value;
+if(!email||!password){authStatus.textContent="Enter your email and password.";return;}
+authStatus.textContent="Signing in...";
+const {data,error}=await supabase.auth.signInWithPassword({email,password});
+if(error){authStatus.textContent=error.message;return;}
+authStatus.textContent="Welcome back to NOVACREATE!";
+await showAccount(data.user);
 };
 
-window.signOut=async function(){
- const {error}=await supabase.auth.signOut();
- if(error){authStatus.textContent=error.message;return;}
- authStatus.textContent="You have signed out.";
- showAccount(null);
+window.signOut = async function(){
+const {error}=await supabase.auth.signOut();
+if(error){authStatus.textContent=error.message;return;}
+authStatus.textContent="You have signed out.";
+await showAccount(null);
+};
+
+async function deleteImage(item){
+if(!confirm("Delete this image from your gallery?")) return;
+
+const {error:storageError}=await supabase.storage
+.from(BUCKET).remove([item.image_url]);
+
+if(storageError){
+alert("Could not delete image: "+storageError.message);
+return;
+}
+
+const {error:rowError}=await supabase
+.from("gallery").delete().eq("id",item.id);
+
+if(rowError){
+alert("Image file deleted, but its gallery record could not be removed: "+rowError.message);
+return;
+}
+
+const {data}=await supabase.auth.getUser();
+if(data.user) await loadGallery(data.user);
+}
+
+window.generateImage = async function(){
+const idea=document.getElementById("idea").value.trim();
+const style=document.getElementById("style").value;
+const status=document.getElementById("status");
+const button=document.getElementById("generate");
+const preview=document.getElementById("preview");
+const download=document.getElementById("download");
+
+if(!idea){status.textContent="Please describe your image first.";return;}
+
+button.disabled=true;
+button.textContent="Creating your image...";
+status.textContent="NOVACREATE is creating your image. Please wait.";
+preview.style.display="none";
+download.style.display="none";
+
+try{
+const response=await fetch("https://novacreate-ai.mbanjwasphelele16.workers.dev/generate",{
+method:"POST",
+headers:{"Content-Type":"application/json"},
+body:JSON.stringify({prompt:idea+", "+style+" style"})
+});
+
+const data=await response.json();
+if(!response.ok) throw new Error(data.error||"Image generation failed.");
+if(!data.image) throw new Error("No image was returned.");
+
+preview.src=data.image;
+preview.style.display="block";
+download.href=data.image;
+download.style.display="inline-block";
+
+const {data:userData,error:userError}=await supabase.auth.getUser();
+
+if(userError || !userData.user){
+status.textContent="Your image is ready! Sign in to save it to your gallery.";
+return;
+}
+
+status.textContent="Image created! Saving to your private gallery...";
+
+const imageBlob=await (await fetch(data.image)).blob();
+const path=userData.user.id+"/"+crypto.randomUUID()+".jpg";
+
+const {error:uploadError}=await supabase.storage
+.from(BUCKET)
+.upload(path,imageBlob,{contentType:"image/jpeg",upsert:false});
+
+if(uploadError){
+status.textContent="Image created, but saving failed: "+uploadError.message;
+return;
+}
+
+const {error:insertError}=await supabase.from("gallery").insert({
+user_id:userData.user.id,
+image_url:path,
+prompt:idea+", "+style+" style"
+});
+
+if(insertError){
+await supabase.storage.from(BUCKET).remove([path]);
+status.textContent="Image created, but gallery record failed: "+insertError.message;
+return;
+}
+
+status.textContent="Success! Your image has been saved to My Gallery.";
+await loadGallery(userData.user);
+
+}catch(error){
+status.textContent="Sorry, we couldn't complete the request. "+error.message;
+}finally{
+button.disabled=false;
+button.textContent="Generate My Image";
+}
 };
 
 const {data:sessionData}=await supabase.auth.getSession();
-showAccount(sessionData.session?.user||null);
+await showAccount(sessionData.session?.user||null);
 
 supabase.auth.onAuthStateChange((_event,session)=>{
- showAccount(session?.user||null);
+showAccount(session?.user||null);
 });
-</script>
-
-<script>
-async function generateImage(){
- const idea=document.getElementById("idea").value.trim();
- const style=document.getElementById("style").value;
- const status=document.getElementById("status");
- const button=document.getElementById("generate");
- const preview=document.getElementById("preview");
- const download=document.getElementById("download");
-
- if(!idea){status.textContent="Please describe your image first.";return;}
-
- button.disabled=true;
- button.textContent="Creating your image...";
- status.textContent="NOVACREATE is creating your image. Please wait.";
- preview.style.display="none";
- download.style.display="none";
-
- try{
-  const response=await fetch("https://novacreate-ai.mbanjwasphelele16.workers.dev/generate",{
-   method:"POST",
-   headers:{"Content-Type":"application/json"},
-   body:JSON.stringify({prompt:idea+", "+style+" style"})
-  });
-  const data=await response.json();
-  if(!response.ok)throw new Error(data.error||"Image generation failed.");
-  if(!data.image)throw new Error("No image was returned.");
-  preview.src=data.image;
-  preview.style.display="block";
-  download.href=data.image;
-  download.style.display="block";
-  status.textContent="Your NOVACREATE image is ready!";
- }catch(error){
-  status.textContent="Sorry, we couldn't create your image. "+error.message;
- }finally{
-  button.disabled=false;
-  button.textContent="Generate My Image";
- }
-}
 </script>
 </body>
 </html>
