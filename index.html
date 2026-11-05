@@ -1,333 +1,711 @@
-
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
 <meta charset="UTF-8">
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <meta name="theme-color" content="#080d1b">
+
 <title>NOVACREATE - AI Creative Studio</title>
 
 <style>
+
 *{box-sizing:border-box}
+
 html{scroll-behavior:smooth}
+
 body{margin:0;font-family:Arial,sans-serif;background:#080d1b;color:#f5f7ff;line-height:1.7}
+
 header{position:sticky;top:0;z-index:100;padding:17px 6%;display:flex;justify-content:space-between;align-items:center;background:rgba(10,17,36,.97);border-bottom:1px solid #263b61;flex-wrap:wrap;gap:12px}
+
 .logo{font-size:27px;font-weight:900;letter-spacing:1px;color:#39a9ff}
+
 nav a{color:#dce8ff;text-decoration:none;margin:7px;font-size:14px}
+
 nav a:hover{color:#39a9ff}
+
 .hero{text-align:center;padding:110px 20px;background:radial-gradient(ellipse at top,#173c72,transparent 65%),linear-gradient(135deg,#101d3c,#090d20)}
+
 .hero h1{font-size:clamp(38px,7vw,68px);line-height:1.12;letter-spacing:-2px}
+
 .hero h1 span{color:#39a9ff}
+
 .hero p,.intro{color:#bdcbe5;max-width:680px;margin:0 auto 25px}
+
 .button{display:inline-block;background:linear-gradient(135deg,#168cff,#625bff);color:white;padding:13px 23px;border:0;border-radius:9px;text-decoration:none;font-weight:bold;cursor:pointer;transition:.2s}
+
 .button:hover{transform:translateY(-2px);box-shadow:0 8px 24px #168cff55}
-.button:disabled{opacity:.6;cursor:wait}
+
+.button:disabled{opacity:.6;cursor:not-allowed}
+
 section{padding:70px 7%;text-align:center}
+
 h2{font-size:clamp(27px,4vw,36px)}
+
 .features,.dashboard-grid,.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;margin-top:35px}
+
 .feature,.panel,.dash-card,.gallery-item{background:linear-gradient(145deg,#14213e,#0c152b);border:1px solid #263e68;padding:25px;border-radius:16px;box-shadow:0 12px 35px #00000025}
+
 .feature,.dash-card{transition:.2s}
+
 .feature:hover,.dash-card:hover{transform:translateY(-4px);border-color:#39a9ff}
+
 .feature h3,.dash-card h3{color:#52b4ff}
+
 .panel{max-width:700px;margin:25px auto;text-align:left}
+
 label{display:block;margin:14px 0 6px;font-weight:bold}
+
 input,textarea,select{width:100%;padding:14px;border-radius:9px;border:1px solid #34496c;background:#091226;color:white;font:inherit}
+
 input:focus,textarea:focus,select:focus{outline:none;border-color:#39a9ff;box-shadow:0 0 0 3px #168cff25}
+
 textarea{min-height:130px;resize:vertical}
+
 .panel button{margin-top:15px}
+
 #authStatus,#status,#galleryMessage{margin-top:15px;color:#a9cfff;white-space:pre-wrap}
+
 #preview{display:none;width:100%;margin-top:22px;border-radius:14px;border:1px solid #34558a}
+
 #download{display:none;margin-top:15px;text-align:center}
+
 .small{font-size:13px;color:#aebbd2}
+
 #dashboard{display:none;background:#0b1428}
+
 .dash-card{min-height:155px}
+
 .dash-card p{color:#b9c8e5}
+
 .dash-card a,.gallery-item a{color:#65baff;text-decoration:none;font-weight:bold}
+
 .dash-card a:hover,.gallery-item a:hover{text-decoration:underline}
+
 #gallery{padding-top:45px}
+
 .gallery-grid{align-items:start}
+
 .gallery-item{padding:14px;text-align:left;overflow:hidden}
+
 .gallery-item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block;background:#091226}
+
 .gallery-item p{overflow-wrap:anywhere;color:#d0dcf2}
+
 .gallery-item button{width:100%;margin-top:12px}
+
 .gallery-item a{display:inline-block;margin-top:10px}
+
 #galleryMessageMain{color:#a9cfff}
+
+.video-hero{background:radial-gradient(ellipse at top,#123c70,transparent 70%),linear-gradient(145deg,#101d3c,#090d20);border:1px solid #294b7b;border-radius:20px;padding:35px 22px;margin:30px auto;max-width:900px}
+
+.video-hero h3{font-size:27px;color:#62baff;margin:0 0 10px}
+
+.video-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;margin-top:20px}
+
+.video-option{background:#101d37;border:1px solid #34517d;border-radius:13px;padding:20px;text-align:left}
+
+.video-option h3{color:#60b7ff}
+
+.video-option p{color:#b9c8e5}
+
+.video-preview{display:none;width:100%;max-height:350px;object-fit:contain;border-radius:12px;margin-top:15px}
+
+.video-note{border:1px solid #39517b;background:#101d37;padding:15px;border-radius:10px;color:#c6d6f2;margin-top:20px}
+
+.status-badge{display:inline-block;padding:5px 12px;border-radius:20px;background:#263d68;color:#91caff;font-size:12px;font-weight:bold}
+
 footer{padding:30px 20px;text-align:center;background:#090f20;border-top:1px solid #263b61;color:#9eacc4}
+
 @media(max-width:650px){
+
 header{justify-content:center}
+
 nav{text-align:center}
+
 nav a{display:inline-block;margin:5px}
+
 .hero{padding:75px 18px}
+
 section{padding:50px 5%}
-.features,.dashboard-grid,.gallery-grid{grid-template-columns:1fr}
+
+.features,.dashboard-grid,.gallery-grid,.video-options{grid-template-columns:1fr}
+
 }
+
 </style>
+
 </head>
 
 <body>
 
 <header>
+
 <div class="logo">NOVACREATE</div>
+
 <nav>
+
 <a href="#home">Home</a>
+
 <a href="#features">Features</a>
-<a href="#studio">Studio</a>
+
+<a href="#studio">Image Studio</a>
+
+<a href="#video-studio">Video Studio</a>
+
 <a href="#account">Account</a>
+
 <a href="#dashboard">Dashboard</a>
+
 <a href="#about">About</a>
+
 </nav>
+
 </header>
 
 <div class="hero" id="home">
+
 <h1>Create Beyond <span>Imagination</span></h1>
-<p>Discover a new world of creativity. Turn your ideas into AI-generated images with NOVACREATE.</p>
+
+<p>Discover a new world of creativity. Turn your ideas into AI-generated images and explore the future of digital video creation with NOVACREATE.</p>
+
 <a class="button" href="#studio">Start Creating</a>
+
+<a class="button" href="#video-studio">Explore Video Studio</a>
+
 </div>
 
 <section id="features">
+
 <h2>Explore NOVACREATE</h2>
+
 <p class="intro">Creative tools designed to help creators bring their ideas to life.</p>
+
 <div class="features">
+
 <div class="feature">
+
 <h3>AI Image Creation</h3>
+
 <p>Turn written ideas into original AI-generated images.</p>
+
 </div>
+
 <div class="feature">
+
 <h3>Social Content</h3>
+
 <p>Create visual ideas for your social media content.</p>
+
 </div>
+
 <div class="feature">
+
 <h3>Creator Studio</h3>
+
 <p>Bring your imagination into one creative space.</p>
+
 </div>
+
+<div class="feature">
+
+<h3>AI Video Studio</h3>
+
+<p>Explore text-to-video and image-to-video creative tools.</p>
+
 </div>
+
+</div>
+
 </section>
 
 <section id="account">
+
 <h2>Your NOVACREATE Account</h2>
+
 <p class="intro">Create an account or sign in to NOVACREATE.</p>
+
 <div class="panel">
+
 <div id="accountInfo">You are not signed in.</div>
+
 <label for="email">Email address</label>
+
 <input id="email" type="email" autocomplete="email" placeholder="you@example.com">
+
 <label for="password">Password</label>
+
 <input id="password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters">
+
 <button class="button" id="signupButton" onclick="signUp()">Create Account</button>
+
 <button class="button" id="loginButton" onclick="signIn()">Sign In</button>
+
 <button class="button" id="logoutButton" onclick="signOut()" style="display:none">Sign Out</button>
+
 <div id="authStatus" role="status"></div>
+
 <p class="small">You may need to confirm your email before signing in.</p>
+
 </div>
+
 </section>
 
 <section id="dashboard">
+
 <h2>Welcome to Your Creator Dashboard</h2>
+
 <p class="intro">Your creative space starts here.</p>
 
 <div class="panel">
+
 <h3>Creator Profile</h3>
+
 <p id="dashboardEmail"></p>
+
 <p id="memberSince" class="small"></p>
+
 </div>
 
 <div class="dashboard-grid">
+
 <div class="dash-card">
+
 <h3>🎨 Create Images</h3>
+
 <p>Turn your ideas into AI artwork.</p>
+
 <a href="#studio">Open AI Studio →</a>
+
 </div>
 
 <div class="dash-card">
+
+<h3>🎬 Video Studio</h3>
+
+<p>Explore creative video-generation options.</p>
+
+<a href="#video-studio">Open Video Studio →</a>
+
+</div>
+
+<div class="dash-card">
+
 <h3>🖼️ My Gallery</h3>
+
 <p>Your personal image collection.</p>
+
 <a href="#gallery">View My Gallery →</a>
+
 <p id="galleryMessage">Your saved images will appear below.</p>
+
 </div>
 
 <div class="dash-card">
+
 <h3>👤 My Account</h3>
+
 <p>View your signed-in email and account details.</p>
+
 <a href="#account">Manage Account →</a>
+
 </div>
+
 </div>
 
 <section id="gallery">
+
 <h2>My Gallery</h2>
+
 <p class="intro">Your saved NOVACREATE artwork.</p>
+
 <div id="galleryMessageMain" role="status">Sign in to view your gallery.</div>
+
 <div id="galleryGrid" class="gallery-grid"></div>
+
 </section>
+
 </section>
 
 <section id="studio">
-<h2>Your AI Creative Studio</h2>
+
+<h2>Your AI Image Studio</h2>
+
 <p class="intro">Describe the image you want. Choose a style and let NOVACREATE create it.</p>
 
 <div class="panel">
+
 <label for="idea">Describe your image</label>
+
 <textarea id="idea" maxlength="1800" placeholder="Example: A futuristic city at night with glowing blue buildings..."></textarea>
 
 <label for="style">Choose your image style</label>
+
 <select id="style">
+
 <option>Realistic</option>
+
 <option>Cinematic</option>
+
 <option>Digital art</option>
+
 <option>3D illustration</option>
+
 <option>Minimalist</option>
+
 </select>
 
 <button class="button" id="generate" onclick="generateImage()">Generate My Image</button>
+
 <div id="status" role="status"></div>
+
 <img id="preview" alt="Your AI-generated image">
+
 <a id="download" class="button" download="novacreate-image.jpg">Download Image</a>
+
 <p class="small">Images are saved automatically to your private gallery when you are signed in. Cloudflare AI usage limits may apply.</p>
+
 </div>
+
+</section>
+
+<section id="video-studio">
+
+<h2>NOVACREATE Video Studio</h2>
+
+<p class="intro">Bring your ideas to life. Explore the next generation of AI video creation.</p>
+
+<div class="video-hero">
+
+<span class="status-badge">VIDEO STUDIO</span>
+
+<h3>Create Moving Stories</h3>
+
+<p class="intro">Transform creative prompts and images into video concepts for social media, storytelling and digital content.</p>
+
+<div class="video-options">
+
+<div class="video-option">
+
+<h3>🎬 Text to Video</h3>
+
+<p>Describe a scene and explore how it could become a moving visual story.</p>
+
+</div>
+
+<div class="video-option">
+
+<h3>🖼️ Image to Video</h3>
+
+<p>Start with an image and explore the possibilities of animated content.</p>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<h3>Video Creation Workspace</h3>
+
+<label for="videoMode">Choose creation mode</label>
+
+<select id="videoMode">
+
+<option value="text">Text to Video</option>
+
+<option value="image">Image to Video</option>
+
+</select>
+
+<label for="videoPrompt">Describe your video</label>
+
+<textarea id="videoPrompt" maxlength="1500" placeholder="Example: A futuristic city with flying cars, glowing blue lights and cinematic camera movement..."></textarea>
+
+<div id="videoUploadArea" style="display:none">
+
+<label for="videoImage">Upload an image to animate</label>
+
+<input id="videoImage" type="file" accept="image/*">
+
+<img id="videoImagePreview" class="video-preview" alt="Selected image for video">
+
+</div>
+
+<label for="videoStyle">Choose video style</label>
+
+<select id="videoStyle">
+
+<option>Cinematic</option>
+
+<option>Realistic</option>
+
+<option>Animation</option>
+
+<option>3D</option>
+
+<option>Fantasy</option>
+
+<option>Social Media</option>
+
+</select>
+
+<label for="videoDuration">Choose video duration</label>
+
+<select id="videoDuration">
+
+<option value="5">5 seconds</option>
+
+<option value="10">10 seconds</option>
+
+<option value="15">15 seconds</option>
+
+</select>
+
+<button class="button" id="videoGenerate" disabled>Video Generation Coming Soon</button>
+
+<div class="video-note">
+
+<strong>Coming Soon:</strong> The Video Studio interface is ready for integration. Actual video generation is not active yet because a compatible video-generation service/API still needs to be connected.
+
+</div>
+
+</div>
+
 </section>
 
 <section id="about">
+
 <h2>About NOVACREATE</h2>
+
 <p class="intro">NOVACREATE is building a creative platform for people around the world. Our mission is to make digital creativity accessible through artificial intelligence.</p>
+
 </section>
 
 <footer>© 2026 NOVACREATE. The Future of Digital Creativity.</footer>
 
 <script type="module">
+
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const supabase = createClient(
+
 "https://ewmmideacscdxyhdqspl.supabase.co",
+
 "sb_publishable_1QHJ48mb5D7nwShvTiWcig_ukWKDSCR"
+
 );
 
 const BUCKET = "novacreate-gallery";
+
 const emailInput = document.getElementById("email");
+
 const passwordInput = document.getElementById("password");
+
 const authStatus = document.getElementById("authStatus");
 
 function clearGallery(message){
+
 document.getElementById("galleryGrid").replaceChildren();
+
 document.getElementById("galleryMessageMain").textContent = message;
+
 document.getElementById("galleryMessage").textContent = message;
+
 }
 
 async function loadGallery(user){
+
 const grid = document.getElementById("galleryGrid");
+
 const message = document.getElementById("galleryMessageMain");
+
 grid.replaceChildren();
+
 message.textContent = "Loading your gallery...";
 
 const {data,error} = await supabase
+
 .from("gallery")
+
 .select("id,image_url,prompt,created_at")
+
 .eq("user_id",user.id)
+
 .order("created_at",{ascending:false});
 
 if(error){
+
 message.textContent = "Could not load gallery: " + error.message;
+
 return;
+
 }
 
 if(!data || data.length===0){
+
 message.textContent = "Your gallery is empty. Generate your first image!";
+
 document.getElementById("galleryMessage").textContent = "No saved images yet.";
+
 return;
+
 }
 
 message.textContent = data.length + " saved image(s).";
 
 for(const item of data){
+
 const {data:signed,error:signedError} = await supabase
+
 .storage.from(BUCKET)
+
 .createSignedUrl(item.image_url,3600);
 
 if(signedError) continue;
 
 const card = document.createElement("div");
+
 card.className = "gallery-item";
 
 const img = document.createElement("img");
+
 img.src = signed.signedUrl;
+
 img.alt = item.prompt || "NOVACREATE artwork";
 
 const description = document.createElement("p");
+
 description.textContent = item.prompt || "AI-generated artwork";
 
 const date = document.createElement("p");
+
 date.className = "small";
+
 date.textContent = new Date(item.created_at).toLocaleDateString();
 
 const download = document.createElement("a");
+
 download.href = signed.signedUrl;
+
 download.target = "_blank";
+
 download.rel = "noopener";
+
 download.textContent = "Open / Download Image";
 
 const remove = document.createElement("button");
+
 remove.className = "button";
+
 remove.textContent = "Delete Image";
+
 remove.onclick = () => deleteImage(item);
 
 card.append(img,description,date,download,document.createElement("br"),remove);
+
 grid.appendChild(card);
+
 }
+
 }
 
 async function showAccount(user){
+
 document.getElementById("accountInfo").textContent =
+
 user ? "Signed in as " + user.email : "You are not signed in.";
 
 document.getElementById("signupButton").style.display = user ? "none" : "inline-block";
+
 document.getElementById("loginButton").style.display = user ? "none" : "inline-block";
+
 document.getElementById("logoutButton").style.display = user ? "inline-block" : "none";
+
 document.getElementById("dashboard").style.display = user ? "block" : "none";
+
 document.getElementById("dashboardEmail").textContent = user ? user.email : "";
 
 document.getElementById("memberSince").textContent =
+
 user && user.created_at ? "Member since " + new Date(user.created_at).toLocaleDateString() : "";
 
 if(user){
+
 await loadGallery(user);
+
 }else{
+
 clearGallery("Sign in to view your gallery.");
+
 }
+
 }
 
 window.signUp = async function(){
+
 const email = emailInput.value.trim();
+
 const password = passwordInput.value;
 
 if(!email || password.length<8){
+
 authStatus.textContent = "Enter a valid email and password of at least 8 characters.";
+
 return;
+
 }
 
 authStatus.textContent = "Creating your account...";
 
 const {data,error} = await supabase.auth.signUp({
+
 email,password,
+
 options:{emailRedirectTo:"https://novacreate-ai.github.io/novacreate-website/"}
+
 });
 
 if(error){
+
 authStatus.textContent=error.message;
+
 return;
+
 }
 
 if(data.session){
+
 authStatus.textContent="Welcome to NOVACREATE!";
+
 await showAccount(data.user);
+
 }else{
+
 authStatus.textContent="Registration successful! Please check your email and confirm your account.";
+
 }
+
 };
 
 window.signIn = async function(){
+
 const email=emailInput.value.trim();
+
 const password=passwordInput.value;
 
 if(!email||!password){
+
 authStatus.textContent="Enter your email and password.";
+
 return;
+
 }
 
 authStatus.textContent="Signing in...";
@@ -335,136 +713,255 @@ authStatus.textContent="Signing in...";
 const {data,error}=await supabase.auth.signInWithPassword({email,password});
 
 if(error){
+
 authStatus.textContent=error.message;
+
 return;
+
 }
 
 authStatus.textContent="Welcome back to NOVACREATE!";
+
 await showAccount(data.user);
+
 };
 
 window.signOut = async function(){
+
 const {error}=await supabase.auth.signOut();
 
 if(error){
+
 authStatus.textContent=error.message;
+
 return;
+
 }
 
 authStatus.textContent="You have signed out.";
+
 await showAccount(null);
+
 };
 
 async function deleteImage(item){
+
 if(!confirm("Delete this image from your gallery?")) return;
 
 const {error:storageError}=await supabase.storage
+
 .from(BUCKET).remove([item.image_url]);
 
 if(storageError){
+
 alert("Could not delete image: "+storageError.message);
+
 return;
+
 }
 
 const {error:rowError}=await supabase
+
 .from("gallery").delete().eq("id",item.id);
 
 if(rowError){
+
 alert("Image file deleted, but its gallery record could not be removed: "+rowError.message);
+
 return;
+
 }
 
 const {data}=await supabase.auth.getUser();
+
 if(data.user) await loadGallery(data.user);
+
 }
 
 window.generateImage = async function(){
+
 const idea=document.getElementById("idea").value.trim();
+
 const style=document.getElementById("style").value;
+
 const status=document.getElementById("status");
+
 const button=document.getElementById("generate");
+
 const preview=document.getElementById("preview");
+
 const download=document.getElementById("download");
 
 if(!idea){
+
 status.textContent="Please describe your image first.";
+
 return;
+
 }
 
 button.disabled=true;
+
 button.textContent="Creating your image...";
+
 status.textContent="NOVACREATE is creating your image. Please wait.";
+
 preview.style.display="none";
+
 download.style.display="none";
 
 try{
+
 const response=await fetch("https://novacreate-ai.mbanjwasphelele16.workers.dev/generate",{
+
 method:"POST",
+
 headers:{"Content-Type":"application/json"},
+
 body:JSON.stringify({prompt:idea+", "+style+" style"})
+
 });
 
 const data=await response.json();
 
 if(!response.ok) throw new Error(data.error||"Image generation failed.");
+
 if(!data.image) throw new Error("No image was returned.");
 
 preview.src=data.image;
+
 preview.style.display="block";
+
 download.href=data.image;
+
 download.style.display="inline-block";
 
 const {data:userData,error:userError}=await supabase.auth.getUser();
 
 if(userError || !userData.user){
+
 status.textContent="Your image is ready! Sign in to save it to your gallery.";
+
 return;
+
 }
 
 status.textContent="Image created! Saving to your private gallery...";
 
 const imageBlob=await (await fetch(data.image)).blob();
+
 const path=userData.user.id+"/"+crypto.randomUUID()+".jpg";
 
 const {error:uploadError}=await supabase.storage
+
 .from(BUCKET)
+
 .upload(path,imageBlob,{contentType:"image/jpeg",upsert:false});
 
 if(uploadError){
+
 status.textContent="Image created, but saving failed: "+uploadError.message;
+
 return;
+
 }
 
 const {error:insertError}=await supabase.from("gallery").insert({
+
 user_id:userData.user.id,
+
 image_url:path,
+
 prompt:idea+", "+style+" style"
+
 });
 
 if(insertError){
+
 await supabase.storage.from(BUCKET).remove([path]);
+
 status.textContent="Image created, but gallery record failed: "+insertError.message;
+
 return;
+
 }
 
 status.textContent="Success! Your image has been saved to My Gallery.";
+
 await loadGallery(userData.user);
 
 }catch(error){
+
 status.textContent="Sorry, we couldn't complete the request. "+error.message;
+
 }finally{
+
 button.disabled=false;
+
 button.textContent="Generate My Image";
+
 }
+
 };
 
+const videoMode=document.getElementById("videoMode");
+
+const videoUploadArea=document.getElementById("videoUploadArea");
+
+const videoImage=document.getElementById("videoImage");
+
+const videoImagePreview=document.getElementById("videoImagePreview");
+
+videoMode.addEventListener("change",function(){
+
+const isImageMode=videoMode.value==="image";
+
+videoUploadArea.style.display=isImageMode?"block":"none";
+
+});
+
+videoImage.addEventListener("change",function(){
+
+const file=videoImage.files[0];
+
+if(!file){
+
+videoImagePreview.style.display="none";
+
+return;
+
+}
+
+if(!file.type.startsWith("image/")){
+
+alert("Please select an image file.");
+
+videoImage.value="";
+
+videoImagePreview.style.display="none";
+
+return;
+
+}
+
+videoImagePreview.src=URL.createObjectURL(file);
+
+videoImagePreview.style.display="block";
+
+});
+
 const {data:sessionData}=await supabase.auth.getSession();
+
 await showAccount(sessionData.session?.user||null);
 
 supabase.auth.onAuthStateChange((_event,session)=>{
+
 showAccount(session?.user||null);
+
 });
+
 </script>
 
 </body>
+
 </html>
