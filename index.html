@@ -4,46 +4,66 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#080d1b">
 <title>NOVACREATE - AI Creative Studio</title>
+
 <style>
 *{box-sizing:border-box}
-body{margin:0;font-family:Arial,sans-serif;background:#080d1b;color:#fff;line-height:1.6}
-header{padding:20px 7%;display:flex;justify-content:space-between;align-items:center;background:#0d1529;flex-wrap:wrap;gap:12px}
-.logo{font-size:25px;font-weight:bold;color:#39a9ff}
-nav a{color:#fff;text-decoration:none;margin:8px;font-size:14px}
-.hero{text-align:center;padding:85px 20px;background:linear-gradient(135deg,#101d3c,#10102c)}
-.hero h1{font-size:clamp(36px,7vw,60px);line-height:1.1}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,sans-serif;background:#080d1b;color:#f5f7ff;line-height:1.7}
+header{position:sticky;top:0;z-index:100;padding:17px 6%;display:flex;justify-content:space-between;align-items:center;background:rgba(10,17,36,.97);border-bottom:1px solid #263b61;flex-wrap:wrap;gap:12px}
+.logo{font-size:27px;font-weight:900;letter-spacing:1px;color:#39a9ff}
+nav a{color:#dce8ff;text-decoration:none;margin:7px;font-size:14px}
+nav a:hover{color:#39a9ff}
+.hero{text-align:center;padding:110px 20px;background:radial-gradient(ellipse at top,#173c72,transparent 65%),linear-gradient(135deg,#101d3c,#090d20)}
+.hero h1{font-size:clamp(38px,7vw,68px);line-height:1.12;letter-spacing:-2px}
 .hero h1 span{color:#39a9ff}
-.hero p,.intro{color:#c5cee2;max-width:650px;margin:0 auto 25px}
-.button{display:inline-block;background:#168cff;color:#fff;padding:13px 24px;border:0;border-radius:8px;text-decoration:none;font-weight:bold;cursor:pointer}
-.button:disabled{opacity:.6}
-section{padding:60px 7%;text-align:center}
-h2{font-size:30px}
-.features,.dashboard-grid,.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:18px;margin-top:30px}
-.feature,.panel,.dash-card,.gallery-item{background:#111c33;border:1px solid #263a60;padding:25px;border-radius:12px}
+.hero p,.intro{color:#bdcbe5;max-width:680px;margin:0 auto 25px}
+.button{display:inline-block;background:linear-gradient(135deg,#168cff,#625bff);color:white;padding:13px 23px;border:0;border-radius:9px;text-decoration:none;font-weight:bold;cursor:pointer;transition:.2s}
+.button:hover{transform:translateY(-2px);box-shadow:0 8px 24px #168cff55}
+.button:disabled{opacity:.6;cursor:wait}
+section{padding:70px 7%;text-align:center}
+h2{font-size:clamp(27px,4vw,36px)}
+.features,.dashboard-grid,.gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px;margin-top:35px}
+.feature,.panel,.dash-card,.gallery-item{background:linear-gradient(145deg,#14213e,#0c152b);border:1px solid #263e68;padding:25px;border-radius:16px;box-shadow:0 12px 35px #00000025}
+.feature,.dash-card{transition:.2s}
+.feature:hover,.dash-card:hover{transform:translateY(-4px);border-color:#39a9ff}
 .feature h3,.dash-card h3{color:#52b4ff}
-.panel{max-width:650px;margin:25px auto;text-align:left}
+.panel{max-width:700px;margin:25px auto;text-align:left}
 label{display:block;margin:14px 0 6px;font-weight:bold}
-input,textarea,select{width:100%;padding:13px;border-radius:8px;border:1px solid #34496c;background:#091226;color:#fff;font:inherit}
-textarea{min-height:120px}
+input,textarea,select{width:100%;padding:14px;border-radius:9px;border:1px solid #34496c;background:#091226;color:white;font:inherit}
+input:focus,textarea:focus,select:focus{outline:none;border-color:#39a9ff;box-shadow:0 0 0 3px #168cff25}
+textarea{min-height:130px;resize:vertical}
 .panel button{margin-top:15px}
-#authStatus,#status,#galleryMessage{margin-top:15px;color:#a9c8ef;white-space:pre-wrap}
-#preview{display:none;width:100%;margin-top:20px;border-radius:10px}
+#authStatus,#status,#galleryMessage{margin-top:15px;color:#a9cfff;white-space:pre-wrap}
+#preview{display:none;width:100%;margin-top:22px;border-radius:14px;border:1px solid #34558a}
 #download{display:none;margin-top:15px;text-align:center}
 .small{font-size:13px;color:#aebbd2}
 #dashboard{display:none;background:#0b1428}
-.dash-card{min-height:145px}
-.dash-card p{color:#aebbd2}
-.dash-card a{color:#65baff}
-.gallery-item img{width:100%;border-radius:8px;display:block}
-.gallery-item p{overflow-wrap:anywhere;color:#c5cee2}
-.gallery-item a{color:#65baff}
-.gallery-item button{margin-top:10px}
-#gallery{padding-top:35px}
-footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
-@media(max-width:550px){header{justify-content:center}nav{text-align:center}}
+.dash-card{min-height:155px}
+.dash-card p{color:#b9c8e5}
+.dash-card a,.gallery-item a{color:#65baff;text-decoration:none;font-weight:bold}
+.dash-card a:hover,.gallery-item a:hover{text-decoration:underline}
+#gallery{padding-top:45px}
+.gallery-grid{align-items:start}
+.gallery-item{padding:14px;text-align:left;overflow:hidden}
+.gallery-item img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:10px;display:block;background:#091226}
+.gallery-item p{overflow-wrap:anywhere;color:#d0dcf2}
+.gallery-item button{width:100%;margin-top:12px}
+.gallery-item a{display:inline-block;margin-top:10px}
+#galleryMessageMain{color:#a9cfff}
+footer{padding:30px 20px;text-align:center;background:#090f20;border-top:1px solid #263b61;color:#9eacc4}
+@media(max-width:650px){
+header{justify-content:center}
+nav{text-align:center}
+nav a{display:inline-block;margin:5px}
+.hero{padding:75px 18px}
+section{padding:50px 5%}
+.features,.dashboard-grid,.gallery-grid{grid-template-columns:1fr}
+}
 </style>
 </head>
+
 <body>
 
 <header>
@@ -68,9 +88,18 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <h2>Explore NOVACREATE</h2>
 <p class="intro">Creative tools designed to help creators bring their ideas to life.</p>
 <div class="features">
-<div class="feature"><h3>AI Image Creation</h3><p>Turn written ideas into original AI-generated images.</p></div>
-<div class="feature"><h3>Social Content</h3><p>Create visual ideas for your social media content.</p></div>
-<div class="feature"><h3>Creator Studio</h3><p>Bring your imagination into one creative space.</p></div>
+<div class="feature">
+<h3>AI Image Creation</h3>
+<p>Turn written ideas into original AI-generated images.</p>
+</div>
+<div class="feature">
+<h3>Social Content</h3>
+<p>Create visual ideas for your social media content.</p>
+</div>
+<div class="feature">
+<h3>Creator Studio</h3>
+<p>Bring your imagination into one creative space.</p>
+</div>
 </div>
 </section>
 
@@ -94,23 +123,27 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <section id="dashboard">
 <h2>Welcome to Your Creator Dashboard</h2>
 <p class="intro">Your creative space starts here.</p>
+
 <div class="panel">
 <h3>Creator Profile</h3>
 <p id="dashboardEmail"></p>
 <p id="memberSince" class="small"></p>
 </div>
+
 <div class="dashboard-grid">
 <div class="dash-card">
 <h3>🎨 Create Images</h3>
 <p>Turn your ideas into AI artwork.</p>
 <a href="#studio">Open AI Studio →</a>
 </div>
+
 <div class="dash-card">
 <h3>🖼️ My Gallery</h3>
 <p>Your personal image collection.</p>
 <a href="#gallery">View My Gallery →</a>
 <p id="galleryMessage">Your saved images will appear below.</p>
 </div>
+
 <div class="dash-card">
 <h3>👤 My Account</h3>
 <p>View your signed-in email and account details.</p>
@@ -129,9 +162,11 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <section id="studio">
 <h2>Your AI Creative Studio</h2>
 <p class="intro">Describe the image you want. Choose a style and let NOVACREATE create it.</p>
+
 <div class="panel">
 <label for="idea">Describe your image</label>
 <textarea id="idea" maxlength="1800" placeholder="Example: A futuristic city at night with glowing blue buildings..."></textarea>
+
 <label for="style">Choose your image style</label>
 <select id="style">
 <option>Realistic</option>
@@ -140,6 +175,7 @@ footer{padding:25px;text-align:center;background:#0d1529;color:#9eacc4}
 <option>3D illustration</option>
 <option>Minimalist</option>
 </select>
+
 <button class="button" id="generate" onclick="generateImage()">Generate My Image</button>
 <div id="status" role="status"></div>
 <img id="preview" alt="Your AI-generated image">
@@ -239,11 +275,13 @@ grid.appendChild(card);
 async function showAccount(user){
 document.getElementById("accountInfo").textContent =
 user ? "Signed in as " + user.email : "You are not signed in.";
+
 document.getElementById("signupButton").style.display = user ? "none" : "inline-block";
 document.getElementById("loginButton").style.display = user ? "none" : "inline-block";
 document.getElementById("logoutButton").style.display = user ? "inline-block" : "none";
 document.getElementById("dashboard").style.display = user ? "block" : "none";
 document.getElementById("dashboardEmail").textContent = user ? user.email : "";
+
 document.getElementById("memberSince").textContent =
 user && user.created_at ? "Member since " + new Date(user.created_at).toLocaleDateString() : "";
 
@@ -257,16 +295,24 @@ clearGallery("Sign in to view your gallery.");
 window.signUp = async function(){
 const email = emailInput.value.trim();
 const password = passwordInput.value;
+
 if(!email || password.length<8){
 authStatus.textContent = "Enter a valid email and password of at least 8 characters.";
 return;
 }
+
 authStatus.textContent = "Creating your account...";
+
 const {data,error} = await supabase.auth.signUp({
 email,password,
 options:{emailRedirectTo:"https://novacreate-ai.github.io/novacreate-website/"}
 });
-if(error){authStatus.textContent=error.message;return;}
+
+if(error){
+authStatus.textContent=error.message;
+return;
+}
+
 if(data.session){
 authStatus.textContent="Welcome to NOVACREATE!";
 await showAccount(data.user);
@@ -278,17 +324,33 @@ authStatus.textContent="Registration successful! Please check your email and con
 window.signIn = async function(){
 const email=emailInput.value.trim();
 const password=passwordInput.value;
-if(!email||!password){authStatus.textContent="Enter your email and password.";return;}
+
+if(!email||!password){
+authStatus.textContent="Enter your email and password.";
+return;
+}
+
 authStatus.textContent="Signing in...";
+
 const {data,error}=await supabase.auth.signInWithPassword({email,password});
-if(error){authStatus.textContent=error.message;return;}
+
+if(error){
+authStatus.textContent=error.message;
+return;
+}
+
 authStatus.textContent="Welcome back to NOVACREATE!";
 await showAccount(data.user);
 };
 
 window.signOut = async function(){
 const {error}=await supabase.auth.signOut();
-if(error){authStatus.textContent=error.message;return;}
+
+if(error){
+authStatus.textContent=error.message;
+return;
+}
+
 authStatus.textContent="You have signed out.";
 await showAccount(null);
 };
@@ -324,7 +386,10 @@ const button=document.getElementById("generate");
 const preview=document.getElementById("preview");
 const download=document.getElementById("download");
 
-if(!idea){status.textContent="Please describe your image first.";return;}
+if(!idea){
+status.textContent="Please describe your image first.";
+return;
+}
 
 button.disabled=true;
 button.textContent="Creating your image...";
@@ -340,6 +405,7 @@ body:JSON.stringify({prompt:idea+", "+style+" style"})
 });
 
 const data=await response.json();
+
 if(!response.ok) throw new Error(data.error||"Image generation failed.");
 if(!data.image) throw new Error("No image was returned.");
 
@@ -399,5 +465,6 @@ supabase.auth.onAuthStateChange((_event,session)=>{
 showAccount(session?.user||null);
 });
 </script>
+
 </body>
 </html>
